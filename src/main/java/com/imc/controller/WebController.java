@@ -2,17 +2,11 @@ package com.imc.controller;
 
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
-import com.imc.model.Supplier;
-import com.imc.model.SupplierRepository;
-import com.imc.model.TbAreaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Map;
 
@@ -44,21 +38,14 @@ public class WebController {
     @Autowired @Qualifier("hikariTemplate")
     private JdbcTemplate hikariTemplate;
 
-    @Autowired
-    private SupplierRepository supplierRepository;
-
-
     /**
      * 若页面上需要展示返回的内容则ResponseBody注解需要加上,或者在当前class上把Controller换成RestController
-     * @param name
-     * @param age
      * @return
      */
     @RequestMapping(value = "/hello")
 //    @ResponseBody
-    public Object test(@RequestParam String name, @RequestParam String age) {
+    public Object test() {
         System.out.println("进入controller------>");
-        System.out.println("name="+name+"----->>>>>>>>--------age="+age);
         System.out.println(this.getClass().getResource("/").getPath());
         //druid连接池
 //        List<Map<String, Object>> list = druidJdbcTemplate.queryForList("SELECT * from tb_shop");
@@ -73,16 +60,10 @@ public class WebController {
 //        List<Map<String, Object>> list = c3p0Template.queryForList("SELECT * from tb_shop");
 
         //hikari连接池
-        List<Map<String, Object>> list = hikariTemplate.queryForList("SELECT * from tb_shop");
+        List<Map<String, Object>> list = hikariTemplate.queryForList("SELECT * from supplier");
 
         log.info("执行结果-->" + list);
         return list;
     }
-
-    @GetMapping("/jpa/list")
-    private Object list() {
-        return this.supplierRepository.findAll();
-    }
-
 
 }
